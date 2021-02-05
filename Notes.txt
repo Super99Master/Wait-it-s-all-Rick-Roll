@@ -1,0 +1,39 @@
+Youtube page is not static (duh) it gets generated when you ask for that url.
+There are only 2 differnences between the htmls. (excluding all the nonce signature)
+
+- ytInitialData:
+    which contains info about the video: links, video name, channel, like/dislike etc....
+
+- ytInitialPlayerResponse:
+    which contains info about the player
+
+some video (the copyrighted one??) do not have an expose url, it comes in a variable called cypher
+the cypher is easy to reverse, it contains the signature and the url.
+the url is good but the signature is not.
+The signature has to be reversed then the char in place 0 has to be swapped with char in pos 29.
+The end of the signature contains a part that repeats n time, the valid sign only contains half the repeats.
+
+the only differences between a real request and the calculated one is the query &n that has a different value.
+The link works anyway even if the &n is different.
+
+Now that we have a valid link we only need to add some queries:
+
+- &alr=yes : only present in cyphers and should be manually added
+- &cpn : no idea
+- &cver : should be the version of the loaded player, you can find this value in ytInitialPlayerResponse
+- &range : the range of the clip expressed in ...... no idea, the numbers are way to big for frames count
+- &rn : the numbers of request made by youtube for clips. It will increase even if something goes wrong
+- &rbuf : no idea, the name makes me think something about the buffer, 
+        altho sometime the buffer loads (gray bar) but the value is 0
+
+The missing queries can and should be copied from then old link.
+
+Access-Control-Allow-Origin error
+CORS is a pain.
+
+if the subdomain of the new link is not the same of the link originally requested by youtube, CORS will raise an error.
+if you overwrite the origin header with 'https://www.youtube.com' like the extension does, it will raise: 
+    The 'Access-Control-Allow-Origin' header has a value 'https://www.youtube.com' that is not equal to the supplied origin.
+
+if you don't then it will raise:
+    No 'Access-Control-Allow-Origin' header is present on the requested resource

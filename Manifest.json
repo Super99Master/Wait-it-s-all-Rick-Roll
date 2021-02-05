@@ -1,0 +1,17 @@
+{
+  "name": "Wait, it's all Rick Roll?",
+  "version": "1.0",
+  "description": "Always has been.",
+  "manifest_version": 2,
+  "permissions": [
+	"webRequest",
+	"https://www.youtube.com/",
+  "https://*.googlevideo.com/",
+  "webRequestBlocking",
+  "tabs"
+  ],
+  "background": {
+	"scripts": ["background.js"],
+	"persistent": true
+  }
+}
